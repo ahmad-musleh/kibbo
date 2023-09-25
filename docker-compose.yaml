@@ -1,7 +1,7 @@
 version: "3"
 services:
   kibbo:
-    image: musleh/kibbo:0.0.1
+    image: musleh/kibbo:1.0.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./logs:/logs

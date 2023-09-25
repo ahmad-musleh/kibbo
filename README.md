@@ -9,8 +9,7 @@ All you need is to add the following lines to your compose file:
 version: "3"
 services:
   kibbo:
-    build:
-      context: kibbo
+    image: musleh/kibbo:1.0.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./logs:/logs
