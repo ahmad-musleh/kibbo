@@ -1,0 +1,14 @@
+name: Build Image
+run-name: ${{ github.actor }} is build and pushing Kibbo
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Image
+        uses: docker/build-push-action@v5
+        with:
+          context: kibbo
+          push: false
+          tags: musleh/kibbo:${{ github.run_id }}
