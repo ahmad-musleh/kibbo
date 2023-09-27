@@ -2,6 +2,7 @@
 
 A simple docker compose logger to a local directory.
 
+![main branch status](https://github.com/ahmad-musleh/kibbo/actions/workflows/push-image.yaml/badge.svg)
 ## Setup
 
 All you need is to add the following lines to your compose file:
