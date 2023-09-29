@@ -1,3 +1,10 @@
+cleanup() {
+    echo "Received SIGINT/SIGTERM signal. Stopping all logging jobs"
+    exit 0
+}
+
+trap 'cleanup' SIGINT SIGTERM
+
 hostname=$(cat /etc/hostname)
 echo "hostname is $hostname"
 
@@ -10,7 +17,7 @@ docker network inspect $network | jq -r ".[0].Containers | to_entries[] | [.key,
         shortened_id=${container_id:0:12}
         if [ "$hostname" != "$shortened_id" ]
         then
-            # Do not log this container
+            # Log all containers but this one
             echo "Short ID: $shortened_id Name: $container_name ID: $container_id";
             docker logs -f --timestamps $container_id >& "/logs/$container_name.log" &
         fi
