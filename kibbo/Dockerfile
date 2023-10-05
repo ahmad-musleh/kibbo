@@ -1,5 +1,5 @@
 FROM docker:cli
-RUN apk update && apk add jq
-COPY entrypoint.sh entrypoint.sh
-
+RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories 
+RUN apk update && apk add jq etcd etcd-ctl openrc
+COPY . .
 ENTRYPOINT [ "sh", "entrypoint.sh" ]
