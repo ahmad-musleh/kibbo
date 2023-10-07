@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is build and pushing Kibbo
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,4 +19,4 @@ jobs:
         with:
           context: kibbo
           push: true
-          tags: musleh/kibbo:${{ github.ref_name }}
+          tags: musleh/kibbo:latest,musleh/kibbo:${{ github.ref_name }}
