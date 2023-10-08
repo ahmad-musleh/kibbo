@@ -29,15 +29,21 @@ check_if_logger_running() {
 }
 
 run_logs_for_container() {
-    local shortened_id=$1
-    local container_id=$2
-    local container_name=$3
+    local container_id=$1
+    local container_name=$2
+
+    if [ "$APPEND" = "TRUE" ]; then
+        local append=">>"
+    else
+        local append=">"
+    fi
 
     echo "Inserting $container_name into etcd"
 
-    sh -c "etcdctl put $container_id $container_name"
+    etcdctl put "$container_id" "$container_name"
 
-    docker logs -f --timestamps $container_id >& "/logs/$container_name.log"
+    command="docker logs -f --timestamps $container_id $append /logs/$container_name.log 2>&1"
+    eval "$command"
 
     echo "Removing $container_name from etcd"
     etcdctl del $container_id
@@ -57,7 +63,7 @@ check_and_update_loggers() {
 
                 if [ $logger_running -eq "0" ]; then
                     echo "$container_name logger not started. Starting..."
-                    run_logs_for_container "$shortened_id" "$container_id" "$container_name" &
+                    run_logs_for_container "$container_id" "$container_name" &
                     
                 else
                     echo "$container_name logger running already. Skipping..."
