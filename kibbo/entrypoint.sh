@@ -38,11 +38,17 @@ run_logs_for_container() {
         local append=">"
     fi
 
+    if [ "$INCLUDE_TIMESTAMPS" = "TRUE" ]; then
+        local include_timestamps="--timestamps"
+    else
+        local include_timestamps=""
+    fi
+
     echo "Inserting $container_name into etcd"
 
     etcdctl put "$container_id" "$container_name"
 
-    command="docker logs -f --timestamps $container_id $append /logs/$container_name.log 2>&1"
+    command="docker logs -f $include_timestamps $container_id $append /logs/$container_name.log 2>&1"
     eval "$command"
 
     echo "Removing $container_name from etcd"

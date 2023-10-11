@@ -33,3 +33,20 @@ services:
     environment:
       - APPEND=TRUE
 ```
+
+## TIMESTAMPS
+
+Timestamps can also be included in the logs. Just add `- INCLUDE_TIMESTAMPS=TRUE` the following:
+
+```yaml
+version: "3"
+services:
+  kibbo:
+    image: musleh/kibbo:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./logs:/logs
+    environment:
+     - APPEND=TRUE
+     - INCLUDE_TIMESTAMPS=TRUE
+```
