@@ -14,6 +14,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./logs:/logs
+    labels:
+      - kibbo.config.log_mode=optout
 ```
 
 Now you are logging all of your compose containers to `logs`
@@ -30,13 +32,14 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./logs:/logs
-    environment:
-      - APPEND=TRUE
+    labels:
+      - kibbo.config.log_mode=optout
+      - kibbo.config.logfile_update_mode=append
 ```
 
-## TIMESTAMPS
+## Timestamps
 
-Timestamps can also be included in the logs. Just add `- INCLUDE_TIMESTAMPS=TRUE` the following:
+Timestamps can also be included in the logs. Just add `- INCLUDE_TIMESTAMPS=TRUE` to the following:
 
 ```yaml
 version: "3"
@@ -47,6 +50,5 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./logs:/logs
     environment:
-     - APPEND=TRUE
      - INCLUDE_TIMESTAMPS=TRUE
 ```

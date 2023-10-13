@@ -28,15 +28,21 @@ check_if_logger_running() {
     fi
 }
 
+get_redirect_operator() {
+    should_kibbo_append="docker container inspect $hostname | jq -r \".[0].Config.Labels.\\\"kibbo.config.logfile_update_mode\\\" == \\\"append\\\"\""
+    local append=$(eval $should_kibbo_append)
+
+    if [ "$append" = "true" ]; then
+        echo ">>"
+    else
+        echo ">"
+    fi
+
+}
+
 run_logs_for_container() {
     local container_id=$1
     local container_name=$2
-
-    if [ "$APPEND" = "TRUE" ]; then
-        local append=">>"
-    else
-        local append=">"
-    fi
 
     if [ "$INCLUDE_TIMESTAMPS" = "TRUE" ]; then
         local include_timestamps="--timestamps"
@@ -48,12 +54,18 @@ run_logs_for_container() {
 
     etcdctl put "$container_id" "$container_name"
 
-    command="docker logs -f $include_timestamps $container_id $append /logs/$container_name.log 2>&1"
+    echo "append or replace: $file_redirect"
+
+    command="docker logs -f $include_timestamps $container_id $file_redirect /logs/$container_name.log 2>&1"
     eval "$command"
 
     echo "Removing $container_name from etcd"
     etcdctl del $container_id
+}
 
+is_opt_out() {
+    optout=$(eval "docker container inspect $hostname | jq -r \".[0].Config.Labels.\\\"kibbo.config.log_mode\\\" == \\\"optout\\\"\"")
+    echo "$optout"
 }
 
 
@@ -70,7 +82,7 @@ check_and_update_loggers() {
                 if [ $logger_running -eq "0" ]; then
                     echo "$container_name logger not started. Starting..."
                     run_logs_for_container "$container_id" "$container_name" &
-                    
+
                 else
                     echo "$container_name logger running already. Skipping..."
                 fi
@@ -87,6 +99,10 @@ echo "hostname is $hostname"
 network=$(docker ps --format json | jq -r 'select(.ID=="'$hostname'") | .Networks')
 etcdctl put network $network
 echo "Network is $network"
+opt_out=$(is_opt_out)
+echo "opt-out: $opt_out"
+file_redirect=$(get_redirect_operator)
+echo "File redirect operator: $file_redirect"
 
 while true; do
     check_and_update_loggers;
