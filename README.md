@@ -22,7 +22,7 @@ Now you are logging all of your compose containers to `logs`
 
 ## Persisted Logs
 
-If you are interested in having your logs persisted across services updates (ie. You logs to stay if you rebuild and deploy the same service.) then all you need to do is add the following to the yaml above:
+If you are interested in having your logs persisted across services updates (ie. Your logs stay if you rebuild and deploy the same service.) then all you need to do is add the following to the yaml above:
 
 ```yaml
 version: "3"
@@ -39,7 +39,7 @@ services:
 
 ## Timestamps
 
-Timestamps can be included in the logs. Just add `- INCLUDE_TIMESTAMPS=TRUE` to the following:
+Timestamps can be included in the logs. Just add `- kibbo.config.log_file_include_timestamps=true` to the following:
 
 ```yaml
 version: "3"
@@ -49,6 +49,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./logs:/logs
-    environment:
-     - INCLUDE_TIMESTAMPS=TRUE
+    labels:
+      - kibbo.config.log_mode=optout
+      - kibbo.config.log_file_include_timestamps=true
 ```
