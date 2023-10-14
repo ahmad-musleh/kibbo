@@ -47,15 +47,29 @@ set_file_redirect_operator() {
     esac
 }
 
+set_timestamps_arg() {
+    local include_timestamps
+    include_timestamps=$(eval "docker container inspect $hostname | jq -r \".[0].Config.Labels.\\\"kibbo.config.log_file_include_timestamps\\\"\"")
+
+    case $include_timestamps in
+        "true")
+            echo "Log file include timestamps: true"
+            log_file_include_timestamps="--timestamps"
+            ;;
+        "false")
+            echo "Log file include timestamps: false"
+            log_file_include_timestamps=""
+            ;;
+        *)
+            echo "Invalid include timestamps option: $append. Defaulting to true"
+            log_file_include_timestamps="--timestamps"
+    esac
+}
+
+
 run_logs_for_container() {
     local container_id=$1
     local container_name=$2
-
-    if [ "$INCLUDE_TIMESTAMPS" = "TRUE" ]; then
-        local include_timestamps="--timestamps"
-    else
-        local include_timestamps=""
-    fi
 
     echo "Inserting $container_name into etcd"
 
@@ -123,6 +137,7 @@ main() {
     set_network
     set_opt_in_out
     set_file_redirect_operator
+    set_timestamps_arg
 
     while true; do
         check_and_update_loggers;
