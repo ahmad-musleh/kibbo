@@ -20,12 +20,38 @@ check_if_logger_running() {
 
     container_status=$(etcdctl get $key)
     if [ -z "$container_status" ]; then
-        echo 0
+        echo "false"
         return
     else
-        echo 1
+        echo "true"
         return
     fi
+}
+
+container_logging_set_to_active(){
+    local container_id=$1
+    local status
+
+    status=$(eval "docker container inspect $container_id | jq -r \".[0].Config.Labels.\\\"kibbo.config.logging.active\\\"\"")
+
+    case $status in
+        "true")
+            echo "true"
+            ;;
+        "false")
+            echo "false"
+            ;;
+        *)
+            case $opt_setting in
+                "optout")
+                    echo "true"
+                    ;;
+                "optin")
+                    echo "false"
+                    ;;
+            esac
+    esac
+
 }
 
 set_file_redirect_operator() {
@@ -93,6 +119,7 @@ set_opt_in_out() {
             ;;
         *)
             echo "Invalid opt mode: $opt_setting. Defaulting to Opt out"
+            opt_setting="optout"
     esac
 }
 
@@ -104,16 +131,22 @@ check_and_update_loggers() {
             shortened_id=${container_id:0:12}
             if [ "$hostname" != "$shortened_id" ]
             then
-                
+
                 logger_running=$(check_if_logger_running "$container_id")
+                container_should_be_logged=$(container_logging_set_to_active "$container_id")
 
-                if [ $logger_running -eq "0" ]; then
-                    echo "$container_name logger not started. Starting..."
-                    run_logs_for_container "$container_id" "$container_name" &
-
-                else
-                    echo "$container_name logger running already. Skipping..."
-                fi
+                case "$logger_running$container_should_be_logged" in
+                    "falsetrue")
+                        echo "$container_name logger not started. Starting..."
+                        run_logs_for_container "$container_id" "$container_name" &
+                        ;;
+                    "falsefalse")
+                        echo "$container_name is asking not to log. Skipping..."
+                        ;;
+                    *)
+                        echo "$container_name logger running already. Skipping..."
+                        ;;
+                esac
             fi
         done
     return
