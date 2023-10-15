@@ -53,3 +53,32 @@ services:
       - kibbo.config.log_mode=optout
       - kibbo.config.log_file_include_timestamps=true
 ```
+
+## Opt Out: Excluding services
+
+You can exclude a specific service if you have the default setting of Opt Out by adding the following to your service yaml.
+
+```yaml
+    labels:
+      - kibbo.config.logging.active=false
+```
+
+Full example:
+
+```yaml
+version: "3"
+services:
+  example:
+    image: scratch:latest
+    labels:
+      - kibbo.config.logging.active=false
+  kibbo:
+    image: musleh/kibbo:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./logs:/logs
+    labels:
+      - kibbo.config.log_mode=optout
+      - kibbo.config.log_file_include_timestamps=true
+
+```
