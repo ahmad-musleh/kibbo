@@ -164,6 +164,62 @@ set_network() {
     echo "Network: $network"
 }
 
+container_logging_status() {
+
+    local container_name=$1
+    local logging_status=$2
+
+    echo "logging $container_name with logging_status set to: $logging_status" >&2
+
+    case $logging_status in
+        "false")
+            echo "$container_name explicity set logging to false." >&2
+            echo "false"
+            ;;
+        "true")
+            echo "$container_name explicitly set logging to true" >&2
+            echo "true"
+            ;;
+        *)
+            echo "$container_name using default logging settings" >&2
+            case "$opt_setting" in
+                "optin")
+                    echo "false"
+                    ;;
+                "optout")
+                    echo "true"
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+process_events() {
+    docker events --filter 'event=start' --format '{{json .}}' | while read event
+    do
+        local container_id
+        local container_name
+        local logging_active
+
+        container_id=$(echo "$event" | jq ".Actor.ID")
+        container_name=$(echo "$event" | jq ".Actor.Attributes.name")
+        container_logging_label_active=$(echo "$event" | jq -r ".Actor.Attributes.\"kibbo.config.logging.active\"" )
+        logging_active=$(container_logging_status "$container_name" $container_logging_label_active)
+
+        echo "$container_name has ID: $container_id and logging is $logging_active"
+
+        case "$logging_active" in
+            "true")
+                echo "Running logs for $container_name"
+                run_logs_for_container "$container_id" "$container_name" &
+                ;;
+            *)
+                echo "Skipping logging for $container_name"
+                ;;
+        esac
+    done
+}
+
 main() {
     setup_etcd
     set_hostname
@@ -172,10 +228,8 @@ main() {
     set_file_redirect_operator
     set_timestamps_arg
 
-    while true; do
-        check_and_update_loggers;
-        sleep 10; # TODO: wait for all background processes to exit instead
-    done
+    process_events
+
 }
 
 main
