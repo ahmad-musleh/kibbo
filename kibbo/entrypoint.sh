@@ -124,27 +124,27 @@ set_opt_in_out() {
 }
 
 
-check_and_update_loggers() {
+run_loggers_on_currently_running_containers() {
+
+    echo "Looking for runnning containers that want to be logged"
     # Get tsv of container ID and Name
     docker network inspect $network | jq -r ".[0].Containers | to_entries[] | [.key, .value.Name] | @tsv" | 
         while IFS=$'\t' read -r container_id container_name; do
             shortened_id=${container_id:0:12}
             if [ "$hostname" != "$shortened_id" ]
             then
+                container_logging_label_active=$(docker container inspect "$container_id" | jq -r ".[0].Config.Labels.\"kibbo.config.logging.active\"" )
+                logging_active=$(container_logging_status "$container_name" $container_logging_label_active)
 
-                logger_running=$(check_if_logger_running "$container_id")
-                container_should_be_logged=$(container_logging_set_to_active "$container_id")
+                echo "$container_name has ID: $container_id and logging is $logging_active"
 
-                case "$logger_running$container_should_be_logged" in
-                    "falsetrue")
-                        echo "$container_name logger not started. Starting..."
+                case "$logging_active" in
+                    "true")
+                        echo "Running logs for $container_name"
                         run_logs_for_container "$container_id" "$container_name" &
                         ;;
-                    "falsefalse")
-                        echo "$container_name is asking not to log. Skipping..."
-                        ;;
                     *)
-                        echo "$container_name logger running already. Skipping..."
+                        echo "Skipping logging for $container_name"
                         ;;
                 esac
             fi
@@ -228,6 +228,7 @@ main() {
     set_file_redirect_operator
     set_timestamps_arg
 
+    run_loggers_on_currently_running_containers
     process_events
 
 }
