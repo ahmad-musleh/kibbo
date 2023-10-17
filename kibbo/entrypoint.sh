@@ -114,7 +114,7 @@ set_opt_in_out() {
         "optout")
             echo "Services: Opt out"
             ;;
-        "replace")
+        "optin")
             echo "Services: Opt in"
             ;;
         *)
