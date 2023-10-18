@@ -82,3 +82,38 @@ services:
       - kibbo.config.log_file_include_timestamps=true
 
 ```
+
+## Opt In: Include specific services
+
+With opt-in you are in control of which service to have logged. Opt-In by adding the following to your service yaml.
+
+```yaml
+    labels:
+      - kibbo.config.logging.active=true
+```
+
+And modify the default opt mode in the main service.
+
+```yaml
+      - kibbo.config.log_mode=optin
+```
+
+Full example:
+
+```yaml
+version: "3"
+services:
+  example:
+    image: scratch:latest
+    labels:
+      - kibbo.config.logging.active=true
+  kibbo:
+    image: musleh/kibbo:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./logs:/logs
+    labels:
+      - kibbo.config.log_mode=optin
+      - kibbo.config.log_file_include_timestamps=true
+
+```
