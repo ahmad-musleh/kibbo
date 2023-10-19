@@ -69,7 +69,7 @@ Full example:
 version: "3"
 services:
   example:
-    image: scratch:latest
+    image: hello-world:latest
     labels:
       - kibbo.config.logging.active=false
   kibbo:
@@ -104,7 +104,7 @@ Full example:
 version: "3"
 services:
   example:
-    image: scratch:latest
+    image: hello-world:latest
     labels:
       - kibbo.config.logging.active=true
   kibbo:
