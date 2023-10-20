@@ -117,3 +117,36 @@ services:
       - kibbo.config.log_file_include_timestamps=true
 
 ```
+
+## Service level overrides
+
+You can customize specific services using the same flags for logging, file redirect and timestamps using the same labels:
+
+```yaml
+version: "3"
+services:
+  example_1:
+    image: hello-world:latest
+    labels:
+      - kibbo.config.logging.active=true
+  example_2:
+    image: hello-world:latest
+    labels:
+      - kibbo.config.logging.active=true
+      - kibbo.config.log_file_update_mode=append
+  example_3:
+    image: hello-world:latest
+    labels:
+      - kibbo.config.logging.active=true
+      - kibbo.config.log_file_update_mode=replace
+      - kibbo.config.log_file_include_timestamps=false
+  kibbo:
+    image: musleh/kibbo:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./logs:/logs
+    labels:
+      - kibbo.config.log_mode=optin
+      - kibbo.config.log_file_include_timestamps=true
+
+```

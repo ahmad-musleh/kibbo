@@ -73,6 +73,10 @@ set_file_redirect_operator() {
     esac
 }
 
+get_file_redirect_operator() {
+    echo "$file_redirect_operator"
+}
+
 set_timestamps_arg() {
     local include_timestamps
     include_timestamps=$(eval "docker container inspect $hostname | jq -r \".[0].Config.Labels.\\\"kibbo.config.log_file_include_timestamps\\\"\"")
@@ -92,10 +96,16 @@ set_timestamps_arg() {
     esac
 }
 
+get_timestamps_arg() {
+    echo "$log_file_include_timestamps"
+}
+
 
 run_logs_for_container() {
     local container_id=$1
     local container_name=$2
+    local include_timestamps=$3
+    local file_redirect_operator=$4
 
     echo "Inserting $container_name into etcd"
 
@@ -123,8 +133,86 @@ set_opt_in_out() {
     esac
 }
 
+get_is_opt_out() {
+    case "$opt_setting" in
+        "optin")
+            echo "false"
+            ;;
+        "optout")
+            echo "true"
+            ;;
+    esac
+}
 
-run_loggers_on_currently_running_containers() {
+get_container_info() {
+    local container_id
+    container_id=$1
+
+    local inspect_result
+    inspect_result=$(eval "docker container inspect $container_id")
+    
+    echo "$inspect_result"
+
+}
+
+container_network_membership() {
+    local container_id
+    local network_name
+
+    container_id=$1
+    network_name=$2
+
+    local membership
+    membership="docker ps --no-trunc --format json | jq -r 'select(.ID==\"$container_id\") | .Networks==\"$network_name\"'"
+    membership=$(eval "$membership")
+
+    echo "$membership"
+    
+}
+
+process_container() {
+    local container_id
+    local container_name
+    container_id=$1
+    container_name=$2
+
+    local member
+    member=$(container_network_membership "$container_id" "$(get_network)")
+
+    if [ "$member" == "false" ]
+    then
+        return
+    fi
+    
+    local container_info
+    container_info=$(get_container_info "$container_id")
+
+    local logging_status
+    logging_status=$(check_logging_active_status "$container_info")
+
+    if [ "$logging_status" == "false" ]
+    then
+        return
+    fi
+
+    local file_redirect
+    file_redirect=$(check_file_redirect_status "$container_info")
+
+    local timestamps_override
+    timestamps_override=$(check_timestamps_override "$container_info")
+
+    echo "$container_name:"
+    echo "  id: $container_id"
+    echo "  logging_status: $logging_status"
+    echo "  file redirect: $file_redirect"
+    echo "  timestamps override: $timestamps_override"
+
+    run_logs_for_container "$container_id" "$container_name" "$timestamps_override" "$file_redirect" &
+
+}
+
+
+process_currently_running_containers() {
 
     echo "Looking for runnning containers that want to be logged"
     # Get tsv of container ID and Name
@@ -133,20 +221,7 @@ run_loggers_on_currently_running_containers() {
             shortened_id=${container_id:0:12}
             if [ "$hostname" != "$shortened_id" ]
             then
-                container_logging_label_active=$(docker container inspect "$container_id" | jq -r ".[0].Config.Labels.\"kibbo.config.logging.active\"" )
-                logging_active=$(container_logging_status "$container_name" $container_logging_label_active)
-
-                echo "$container_name has ID: $container_id and logging is $logging_active"
-
-                case "$logging_active" in
-                    "true")
-                        echo "Running logs for $container_name"
-                        run_logs_for_container "$container_id" "$container_name" &
-                        ;;
-                    *)
-                        echo "Skipping logging for $container_name"
-                        ;;
-                esac
+                process_container "$container_id" "$container_name"
             fi
         done
     return
@@ -164,59 +239,87 @@ set_network() {
     echo "Network: $network"
 }
 
-container_logging_status() {
+get_network() {
+    echo "$network"
+}
 
-    local container_name=$1
-    local logging_status=$2
+check_logging_active_status() {
 
-    echo "logging $container_name with logging_status set to: $logging_status" >&2
+    local container_info
+    container_info=$1
+
+    local logging_status
+    logging_status=$(echo $container_info | jq -r ".[0].Config.Labels.\"kibbo.config.logging.active\"")
 
     case $logging_status in
         "false")
-            echo "$container_name explicity set logging to false." >&2
             echo "false"
             ;;
         "true")
-            echo "$container_name explicitly set logging to true" >&2
             echo "true"
             ;;
         *)
-            echo "$container_name using default logging settings" >&2
-            case "$opt_setting" in
-                "optin")
-                    echo "false"
-                    ;;
-                "optout")
-                    echo "true"
-                    ;;
-            esac
-            ;;
+            echo $(get_is_opt_out)
     esac
 }
 
+check_file_redirect_status() {
+    # check manual file redirect override for container
+    local container_info
+    container_info=$1
+
+    local file_redirect_override
+    file_redirect_override=$(echo $container_info | jq -r ".[0].Config.Labels.\"kibbo.config.log_file_update_mode\"")
+
+    case $file_redirect_override in
+        "append")
+            echo ">>"
+            ;;
+        "replace")
+            echo ">"
+            ;;
+        *)
+            echo $(get_file_redirect_operator)
+    esac
+
+}
+
+check_timestamps_override(){
+    # check manual timestamps override for container
+
+    local container_info
+    container_info=$1
+
+    local timestamps_override
+    timestamps_override=$(echo $container_info | jq -r ".[0].Config.Labels.\"kibbo.config.log_file_include_timestamps\"")
+
+    case $timestamps_override in
+        "true")
+            echo "--timestamps"
+            ;;
+        "false")
+            echo ""
+            ;;
+        *)
+            echo $(get_timestamps_arg)
+    esac
+
+}
+
 process_events() {
+
+    process_currently_running_containers
+
     docker events --filter 'event=start' --format '{{json .}}' | while read event
     do
         local container_id
         local container_name
-        local logging_active
 
-        container_id=$(echo "$event" | jq ".Actor.ID")
-        container_name=$(echo "$event" | jq ".Actor.Attributes.name")
-        container_logging_label_active=$(echo "$event" | jq -r ".Actor.Attributes.\"kibbo.config.logging.active\"" )
-        logging_active=$(container_logging_status "$container_name" $container_logging_label_active)
+        container_id=$(echo "$event" | jq -r ".Actor.ID")
+        container_name=$(echo "$event" | jq -r ".Actor.Attributes.name")
+        
+        process_container "$container_id" "$container_name"
 
-        echo "$container_name has ID: $container_id and logging is $logging_active"
-
-        case "$logging_active" in
-            "true")
-                echo "Running logs for $container_name"
-                run_logs_for_container "$container_id" "$container_name" &
-                ;;
-            *)
-                echo "Skipping logging for $container_name"
-                ;;
-        esac
     done
 }
 
@@ -228,7 +331,6 @@ main() {
     set_file_redirect_operator
     set_timestamps_arg
 
-    run_loggers_on_currently_running_containers
     process_events
 
 }
