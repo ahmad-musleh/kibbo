@@ -8,7 +8,7 @@ export default function Home() {
   return (
   <>
     <head>
-      <title>Kibbo by Musleh</title>
+      <title>Kibbo</title>
     </head>
     <body>
       <div className='lg:h-screen'>
