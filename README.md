@@ -7,7 +7,6 @@ A simple docker compose logger to a local directory.
 
 All you need is to add the following lines to your compose file:
 ```yaml
-version: "3"
 services:
   kibbo:
     image: musleh/kibbo:latest
@@ -25,7 +24,6 @@ Now you are logging all of your compose containers to `logs`
 If you are interested in having your logs persisted across services updates (ie. Your logs stay if you rebuild and deploy the same service.) then all you need to do is add the following to the yaml above:
 
 ```yaml
-version: "3"
 services:
   kibbo:
     image: musleh/kibbo:latest
@@ -42,7 +40,6 @@ services:
 Timestamps can be included in the logs. Just add `- kibbo.config.log_file_include_timestamps=true` to the following:
 
 ```yaml
-version: "3"
 services:
   kibbo:
     image: musleh/kibbo:latest
@@ -66,7 +63,6 @@ You can exclude a specific service if you have the default setting of Opt Out by
 Full example:
 
 ```yaml
-version: "3"
 services:
   example:
     image: hello-world:latest
@@ -101,7 +97,6 @@ And modify the default opt mode in the main service.
 Full example:
 
 ```yaml
-version: "3"
 services:
   example:
     image: hello-world:latest
@@ -123,7 +118,6 @@ services:
 You can customize specific services using the same flags for logging, file redirect and timestamps using the same labels:
 
 ```yaml
-version: "3"
 services:
   example_1:
     image: hello-world:latest

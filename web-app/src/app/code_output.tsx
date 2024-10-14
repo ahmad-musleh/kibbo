@@ -17,12 +17,6 @@ export default function CodeOutput ({toggleStates}: {toggleStates: any}) {
                 <div className="bg-[#303030] flex-grow mt-0 mb-0 ml-10 mr-0 rounded-tl-lg">
                     <div className="p-5">
                         <p>
-                            <span className="text-[#9CDCFE]">version</span>
-                            <span>:&nbsp;</span>
-                            <span className="text-[#CE9178]">"3"</span>
-
-                            <br/>
-
                             <span className="text-[#9CDCFE]">services</span>
                             <span>:</span>
 

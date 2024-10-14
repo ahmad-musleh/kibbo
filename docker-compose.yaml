@@ -1,4 +1,3 @@
-version: "3"
 services:
   kibbo:
     image: musleh/kibbo:1.0.0
