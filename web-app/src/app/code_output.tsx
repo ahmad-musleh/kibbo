@@ -96,66 +96,72 @@ export default function CodeOutput({ toggleStates }: { toggleStates: any }) {
               <span>:&nbsp;</span>
               <span className="text-[#CE9178]">hello-world:latest</span>
               <br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <span className="text-[#9CDCFE]">labels</span>
-              <span>:</span>
-              <br />
-              {toggleStates.logService1 ? (
+              {toggleStates.overrideService1 ? (
                 <>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span>-&nbsp;</span>
-                  <span className="text-[#CE9178]">
-                    kibbo.config.logging.active=true
-                  </span>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span className="text-[#9CDCFE]">labels</span>
+                  <span>:</span>
                   <br />
+                  {toggleStates.logService1 ? (
+                    <>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span>-&nbsp;</span>
+                      <span className="text-[#CE9178]">
+                        kibbo.config.logging.active=true
+                      </span>
+                      <br />
+                    </>
+                  ) : (
+                    <>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span>-&nbsp;</span>
+                      <span className="text-[#CE9178]">
+                        kibbo.config.logging.active=false
+                      </span>
+                      <br />
+                    </>
+                  )}
+                  {toggleStates.replaceLogFileService1 ? (
+                    <>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span>-&nbsp;</span>
+                      <span className="text-[#CE9178]">
+                        kibbo.config.log_file_update_mode=replace
+                      </span>
+                      <br />
+                    </>
+                  ) : (
+                    <>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span>-&nbsp;</span>
+                      <span className="text-[#CE9178]">
+                        kibbo.config.log_file_update_mode=append
+                      </span>
+                      <br />
+                    </>
+                  )}
+                  {toggleStates.includeTimestampsService1 ? (
+                    <>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span>-&nbsp;</span>
+                      <span className="text-[#CE9178]">
+                        kibbo.config.log_file_include_timestamps=true
+                      </span>
+                      <br />
+                    </>
+                  ) : (
+                    <>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span>-&nbsp;</span>
+                      <span className="text-[#CE9178]">
+                        kibbo.config.log_file_include_timestamps=false
+                      </span>
+                      <br />
+                    </>
+                  )}
                 </>
               ) : (
-                <>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span>-&nbsp;</span>
-                  <span className="text-[#CE9178]">
-                    kibbo.config.logging.active=false
-                  </span>
-                  <br />
-                </>
-              )}
-              {toggleStates.replaceLogFileService1 ? (
-                <>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span>-&nbsp;</span>
-                  <span className="text-[#CE9178]">
-                    kibbo.config.log_file_update_mode=replace
-                  </span>
-                  <br />
-                </>
-              ) : (
-                <>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span>-&nbsp;</span>
-                  <span className="text-[#CE9178]">
-                    kibbo.config.log_file_update_mode=append
-                  </span>
-                  <br />
-                </>
-              )}
-              {toggleStates.includeTimestampsService1 ? (
-                <>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span>-&nbsp;</span>
-                  <span className="text-[#CE9178]">
-                    kibbo.config.log_file_include_timestamps=true
-                  </span>
-                  <br />
-                </>
-              ) : (
-                <>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span>-&nbsp;</span>
-                  <span className="text-[#CE9178]">
-                    kibbo.config.log_file_include_timestamps=false
-                  </span>
-                  <br />
-                </>
+                <></>
               )}
               &nbsp;&nbsp;&nbsp;&nbsp;
               <span className="text-[#9CDCFE]">hala2</span>
@@ -166,66 +172,72 @@ export default function CodeOutput({ toggleStates }: { toggleStates: any }) {
               <span>:&nbsp;</span>
               <span className="text-[#CE9178]">hello-world:latest</span>
               <br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <span className="text-[#9CDCFE]">labels</span>
-              <span>:</span>
-              <br />
-              {toggleStates.logService2 ? (
+              {toggleStates.overrideService2 ? (
                 <>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span>-&nbsp;</span>
-                  <span className="text-[#CE9178]">
-                    kibbo.config.logging.active=true
-                  </span>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span className="text-[#9CDCFE]">labels</span>
+                  <span>:</span>
                   <br />
+                  {toggleStates.logService2 ? (
+                    <>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span>-&nbsp;</span>
+                      <span className="text-[#CE9178]">
+                        kibbo.config.logging.active=true
+                      </span>
+                      <br />
+                    </>
+                  ) : (
+                    <>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span>-&nbsp;</span>
+                      <span className="text-[#CE9178]">
+                        kibbo.config.logging.active=false
+                      </span>
+                      <br />
+                    </>
+                  )}
+                  {toggleStates.replaceLogFileService2 ? (
+                    <>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span>-&nbsp;</span>
+                      <span className="text-[#CE9178]">
+                        kibbo.config.log_file_update_mode=replace
+                      </span>
+                      <br />
+                    </>
+                  ) : (
+                    <>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span>-&nbsp;</span>
+                      <span className="text-[#CE9178]">
+                        kibbo.config.log_file_update_mode=append
+                      </span>
+                      <br />
+                    </>
+                  )}
+                  {toggleStates.includeTimestampsService2 ? (
+                    <>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span>-&nbsp;</span>
+                      <span className="text-[#CE9178]">
+                        kibbo.config.log_file_include_timestamps=true
+                      </span>
+                      <br />
+                    </>
+                  ) : (
+                    <>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span>-&nbsp;</span>
+                      <span className="text-[#CE9178]">
+                        kibbo.config.log_file_include_timestamps=false
+                      </span>
+                      <br />
+                    </>
+                  )}
                 </>
               ) : (
-                <>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span>-&nbsp;</span>
-                  <span className="text-[#CE9178]">
-                    kibbo.config.logging.active=false
-                  </span>
-                  <br />
-                </>
-              )}
-              {toggleStates.replaceLogFileService2 ? (
-                <>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span>-&nbsp;</span>
-                  <span className="text-[#CE9178]">
-                    kibbo.config.log_file_update_mode=replace
-                  </span>
-                  <br />
-                </>
-              ) : (
-                <>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span>-&nbsp;</span>
-                  <span className="text-[#CE9178]">
-                    kibbo.config.log_file_update_mode=append
-                  </span>
-                  <br />
-                </>
-              )}
-              {toggleStates.includeTimestampsService2 ? (
-                <>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span>-&nbsp;</span>
-                  <span className="text-[#CE9178]">
-                    kibbo.config.log_file_include_timestamps=true
-                  </span>
-                  <br />
-                </>
-              ) : (
-                <>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span>-&nbsp;</span>
-                  <span className="text-[#CE9178]">
-                    kibbo.config.log_file_include_timestamps=false
-                  </span>
-                  <br />
-                </>
+                <></>
               )}
             </p>
           </div>

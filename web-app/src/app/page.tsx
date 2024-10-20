@@ -23,9 +23,11 @@ export default function Home() {
     logEverything: true,
     replaceLogFile: true,
     includeTimestamps: false,
+    overrideService1: false,
     logService1: true,
     replaceLogFileService1: true,
     includeTimestampsService1: false,
+    overrideService2: false,
     logService2: true,
     replaceLogFileService2: true,
     includeTimestampsService2: false,
@@ -52,6 +54,13 @@ export default function Home() {
     });
   }
 
+  function toggleOverrideService1(): void {
+    setToggleStates({
+      ...toggleStates,
+      overrideService1: !toggleStates.overrideService1,
+    });
+  }
+
   function toggleLogService1(): void {
     setToggleStates({
       ...toggleStates,
@@ -70,6 +79,13 @@ export default function Home() {
     setToggleStates({
       ...toggleStates,
       includeTimestampsService1: !toggleStates.includeTimestampsService1,
+    });
+  }
+
+  function toggleOverrideService2(): void {
+    setToggleStates({
+      ...toggleStates,
+      logService2: !toggleStates.logService2,
     });
   }
 
@@ -107,9 +123,11 @@ export default function Home() {
               toggleLogEverything={toggleLogEverything}
               toggleReplaceLogFile={toggleReplaceLogFile}
               toggleIncludeTimestamps={toggleIncludeTimestamps}
+              toggleOverrideService1={toggleOverrideService1}
               toggleLogService1={toggleLogService1}
               toggleReplaceLogFileService1={toggleReplaceLogFileService1}
               toggleIncludeTimestampsService1={toggleIncludeTimestampsService1}
+              toggleOverrideService2={toggleOverrideService2}
               toggleLogService2={toggleLogService2}
               toggleReplaceLogFileService2={toggleReplaceLogFileService2}
               toggleIncludeTimestampsService2={toggleIncludeTimestampsService2}

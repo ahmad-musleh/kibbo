@@ -5,9 +5,11 @@ export default function KibboSelection({
   toggleLogEverything,
   toggleReplaceLogFile,
   toggleIncludeTimestamps,
+  toggleOverrideService1,
   toggleLogService1,
   toggleReplaceLogFileService1,
   toggleIncludeTimestampsService1,
+  toggleOverrideService2,
   toggleLogService2,
   toggleReplaceLogFileService2,
   toggleIncludeTimestampsService2,
@@ -16,9 +18,11 @@ export default function KibboSelection({
   toggleLogEverything: Function;
   toggleReplaceLogFile: Function;
   toggleIncludeTimestamps: Function;
+  toggleOverrideService1: Function;
   toggleLogService1: Function;
   toggleReplaceLogFileService1: Function;
   toggleIncludeTimestampsService1: Function;
+  toggleOverrideService2: Function;
   toggleLogService2: Function;
   toggleReplaceLogFileService2: Function;
   toggleIncludeTimestampsService2: Function;
@@ -32,6 +36,7 @@ export default function KibboSelection({
             <li>
               <Toggle
                 text="Log all services except what I specify not to log"
+                override={true}
                 state={toggleStates.logEverything}
                 updateToggleState={toggleLogEverything}
               />
@@ -39,6 +44,7 @@ export default function KibboSelection({
             <li>
               <Toggle
                 text="Replace log files upon updating service"
+                override={true}
                 state={toggleStates.replaceLogFile}
                 updateToggleState={toggleReplaceLogFile}
               />
@@ -46,6 +52,7 @@ export default function KibboSelection({
             <li>
               <Toggle
                 text="Include timestamps in log file"
+                override={true}
                 state={toggleStates.includeTimestamps}
                 updateToggleState={toggleIncludeTimestamps}
               />
@@ -60,7 +67,7 @@ export default function KibboSelection({
           </div>
           <ul>
             <div className="grid grid-cols-2">
-              <div className="m-2 mb-0 ml-0">
+              <div className="m-2 mb-0 ml-0 rounded-md px-5">
                 <div className="flex">
                   <div className="py-1">
                     <h2>Example service 1</h2>
@@ -68,25 +75,50 @@ export default function KibboSelection({
                 </div>
                 <div className="rounded-bl-md rounded-br-md pt-2">
                   <li>
-                    <Toggle
-                      text="Log me"
-                      state={toggleStates.logService1}
-                      updateToggleState={toggleLogService1}
-                    />
+                    {toggleStates.overrideService1 ? (
+                      <Toggle
+                        text="Log me"
+                        override={false}
+                        state={toggleStates.logService1}
+                        updateToggleState={toggleLogService1}
+                      />
+                    ) : (
+                      <Toggle
+                        text="Log me"
+                        state={toggleStates.logEverything}
+                        updateToggleState={toggleLogService1}
+                      />
+                    )}
                   </li>
                   <li>
-                    <Toggle
-                      text="Replace"
-                      state={toggleStates.replaceLogFileService1}
-                      updateToggleState={toggleReplaceLogFileService1}
-                    />
+                    {toggleStates.overrideService1 ? (
+                      <Toggle
+                        text="Replace"
+                        state={toggleStates.replaceLogFileService1}
+                        updateToggleState={toggleReplaceLogFileService1}
+                      />
+                    ) : (
+                      <Toggle
+                        text="Replace"
+                        state={toggleStates.replaceLogFile}
+                        updateToggleState={toggleReplaceLogFileService1}
+                      />
+                    )}
                   </li>
                   <li>
-                    <Toggle
-                      text="Timestamps"
-                      state={toggleStates.includeTimestampsService1}
-                      updateToggleState={toggleIncludeTimestampsService1}
-                    />
+                    {toggleStates.overrideService1 ? (
+                      <Toggle
+                        text="Timestamps"
+                        state={toggleStates.includeTimestampsService1}
+                        updateToggleState={toggleIncludeTimestampsService1}
+                      />
+                    ) : (
+                      <Toggle
+                        text="Timestamps"
+                        state={toggleStates.includeTimestamps}
+                        updateToggleState={toggleIncludeTimestampsService1}
+                      />
+                    )}
                   </li>
                 </div>
               </div>
@@ -98,25 +130,49 @@ export default function KibboSelection({
                 </div>
                 <div className="pt-2">
                   <li>
-                    <Toggle
-                      text="Log me"
-                      state={toggleStates.logService2}
-                      updateToggleState={toggleLogService2}
-                    />
+                    {toggleStates.overrideService2 ? (
+                      <Toggle
+                        text="Log me"
+                        state={toggleStates.logService2}
+                        updateToggleState={toggleLogService2}
+                      />
+                    ) : (
+                      <Toggle
+                        text="Log me"
+                        state={toggleStates.logEverything}
+                        updateToggleState={toggleLogService2}
+                      />
+                    )}
                   </li>
                   <li>
-                    <Toggle
-                      text="Replace"
-                      state={toggleStates.replaceLogFileService2}
-                      updateToggleState={toggleReplaceLogFileService2}
-                    />
+                    {toggleStates.overrideService2 ? (
+                      <Toggle
+                        text="Replace"
+                        state={toggleStates.replaceLogFileService2}
+                        updateToggleState={toggleReplaceLogFileService2}
+                      />
+                    ) : (
+                      <Toggle
+                        text="Replace"
+                        state={toggleStates.replaceLogFile}
+                        updateToggleState={toggleReplaceLogFileService2}
+                      />
+                    )}
                   </li>
                   <li>
-                    <Toggle
-                      text="Timestamps"
-                      state={toggleStates.includeTimestampsService2}
-                      updateToggleState={toggleIncludeTimestampsService2}
-                    />
+                    {toggleStates.overrideService2 ? (
+                      <Toggle
+                        text="Timestamps"
+                        state={toggleStates.includeTimestampsService2}
+                        updateToggleState={toggleIncludeTimestampsService2}
+                      />
+                    ) : (
+                      <Toggle
+                        text="Timestamps"
+                        state={toggleStates.includeTimestamps}
+                        updateToggleState={toggleIncludeTimestampsService2}
+                      />
+                    )}
                   </li>
                 </div>
               </div>
