@@ -1,5 +1,6 @@
 import Toggle from "./toggle";
 import Image from "next/image";
+import OverrideService from "./override_service";
 
 export default function KibboSelection({
   toggleStates,
@@ -68,141 +69,34 @@ export default function KibboSelection({
           </div>
           <ul>
             <div className="grid grid-cols-2">
-              <div className="group">
-                <div className="">
-                  <div className="group-hover:mx-5">
-                    <div className="hidden rounded-md group-hover:block group-hover:h-64 group-hover:bg-[#337AC6]">
-                      <div className="p-10 pt-20">
-                        <h1 className="text-center text-2xl">
-                          Click to override service 1
-                        </h1>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="m-2 mb-0 ml-0 h-64 rounded-md px-5 group-hover:hidden">
-                    <div className="flex">
-                      <div className="py-1">
-                        <h2>Example service 1</h2>
-                      </div>
-                    </div>
-                    <div className="rounded-bl-md rounded-br-md pt-2">
-                      <li>
-                        {toggleStates.overrideService1 ? (
-                          <Toggle
-                            text="Log me"
-                            override={false}
-                            state={toggleStates.logService1}
-                            updateToggleState={toggleLogService1}
-                          />
-                        ) : (
-                          <Toggle
-                            text="Log me"
-                            state={toggleStates.logEverything}
-                            updateToggleState={toggleLogService1}
-                          />
-                        )}
-                      </li>
-                      <li>
-                        {toggleStates.overrideService1 ? (
-                          <Toggle
-                            text="Replace"
-                            state={toggleStates.replaceLogFileService1}
-                            updateToggleState={toggleReplaceLogFileService1}
-                          />
-                        ) : (
-                          <Toggle
-                            text="Replace"
-                            state={toggleStates.replaceLogFile}
-                            updateToggleState={toggleReplaceLogFileService1}
-                          />
-                        )}
-                      </li>
-                      <li>
-                        {toggleStates.overrideService1 ? (
-                          <Toggle
-                            text="Timestamps"
-                            state={toggleStates.includeTimestampsService1}
-                            updateToggleState={toggleIncludeTimestampsService1}
-                          />
-                        ) : (
-                          <Toggle
-                            text="Timestamps"
-                            state={toggleStates.includeTimestamps}
-                            updateToggleState={toggleIncludeTimestampsService1}
-                          />
-                        )}
-                      </li>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="group">
-                <div className="">
-                  <div className="group-hover:mx-5">
-                    <div className="hidden rounded-md group-hover:block group-hover:h-64 group-hover:bg-[#337AC6]">
-                      <div className="p-10 pt-20">
-                        <h1 className="text-center text-2xl">
-                          Click to override service 2
-                        </h1>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="m-2 mb-0 ml-0 h-64 rounded-md px-5 group-hover:hidden">
-                    <div className="flex">
-                      <div className="rounded-tl-md py-1">
-                        <h2>Example service 2</h2>
-                      </div>
-                    </div>
-                    <div className="rounded-bl-md rounded-br-md pt-2">
-                      <li>
-                        {toggleStates.overrideService2 ? (
-                          <Toggle
-                            text="Log me"
-                            state={toggleStates.logService2}
-                            updateToggleState={toggleLogService2}
-                          />
-                        ) : (
-                          <Toggle
-                            text="Log me"
-                            state={toggleStates.logEverything}
-                            updateToggleState={toggleLogService2}
-                          />
-                        )}
-                      </li>
-                      <li>
-                        {toggleStates.overrideService2 ? (
-                          <Toggle
-                            text="Replace"
-                            state={toggleStates.replaceLogFileService2}
-                            updateToggleState={toggleReplaceLogFileService2}
-                          />
-                        ) : (
-                          <Toggle
-                            text="Replace"
-                            state={toggleStates.replaceLogFile}
-                            updateToggleState={toggleReplaceLogFileService2}
-                          />
-                        )}
-                      </li>
-                      <li>
-                        {toggleStates.overrideService2 ? (
-                          <Toggle
-                            text="Timestamps"
-                            state={toggleStates.includeTimestampsService2}
-                            updateToggleState={toggleIncludeTimestampsService2}
-                          />
-                        ) : (
-                          <Toggle
-                            text="Timestamps"
-                            state={toggleStates.includeTimestamps}
-                            updateToggleState={toggleIncludeTimestampsService2}
-                          />
-                        )}
-                      </li>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <OverrideService
+                overrideServiceName="1"
+                toggleOverrideService={toggleOverrideService1}
+                overrideService={toggleStates.overrideService1}
+                toggleStates={toggleStates}
+                toggleLogService={toggleLogService1}
+                logService={toggleStates.logService1}
+                toggleReplaceLogFileService={toggleReplaceLogFileService1}
+                replaceLogFileService={toggleStates.replaceLogFileService1}
+                toggleIncludeTimestampsService={toggleIncludeTimestampsService1}
+                includeTimestampsService={
+                  toggleStates.includeTimestampsService1
+                }
+              />
+              <OverrideService
+                overrideServiceName="2"
+                toggleOverrideService={toggleOverrideService2}
+                overrideService={toggleStates.overrideService2}
+                toggleStates={toggleStates}
+                toggleLogService={toggleLogService2}
+                logService={toggleStates.logService2}
+                toggleReplaceLogFileService={toggleReplaceLogFileService2}
+                replaceLogFileService={toggleStates.replaceLogFileService2}
+                toggleIncludeTimestampsService={toggleIncludeTimestampsService2}
+                includeTimestampsService={
+                  toggleStates.includeTimestampsService2
+                }
+              />
             </div>
           </ul>
         </div>

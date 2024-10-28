@@ -57,7 +57,7 @@ export default function Home() {
   function toggleOverrideService1(): void {
     setToggleStates({
       ...toggleStates,
-      overrideService1: !toggleStates.overrideService1,
+      overrideService1: true,
     });
   }
 
@@ -85,7 +85,7 @@ export default function Home() {
   function toggleOverrideService2(): void {
     setToggleStates({
       ...toggleStates,
-      logService2: !toggleStates.logService2,
+      overrideService2: true,
     });
   }
 
