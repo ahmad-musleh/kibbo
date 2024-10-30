@@ -29,11 +29,10 @@ export default function OverrideService({
         <div className="">
           <div className={overrideService ? "" : "group-hover:mx-5"}>
             <div
-              //   className="hidden rounded-md group-hover:block group-hover:h-64 group-hover:bg-[#337AC6]"
               className={
                 overrideService
                   ? "hidden"
-                  : "hidden rounded-md group-hover:block group-hover:h-64 group-hover:bg-[#337AC6]"
+                  : "hidden rounded-md group-hover:block group-hover:h-64 group-hover:cursor-pointer group-hover:select-none group-hover:bg-[#337AC6]"
               }
               onClick={() => toggleOverrideService()}
             >
@@ -44,7 +43,6 @@ export default function OverrideService({
               </div>
             </div>
           </div>
-          {/* <div className="m-2 mb-0 ml-0 h-64 rounded-md px-5 group-hover:hidden"> */}
           <div
             className={
               overrideService
@@ -90,6 +88,7 @@ export default function OverrideService({
                   />
                 )}
               </li>
+
               <li>
                 {overrideService ? (
                   <Toggle
