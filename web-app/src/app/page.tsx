@@ -3,6 +3,7 @@ import CodeOutput from "./code_output";
 import KibboSelection from "./kibbo_selection";
 import Footer from "./footer";
 import { useState } from "react";
+import { sendGTMEvent } from "@next/third-parties/google";
 
 type AppProps = {
   toggles: {
@@ -38,12 +39,20 @@ export default function Home() {
       ...toggleStates,
       logEverything: !toggleStates.logEverything,
     });
+    sendGTMEvent({
+      event: "logEverything",
+      value: toggleStates.logEverything,
+    });
   }
 
   function toggleReplaceLogFile(): void {
     setToggleStates({
       ...toggleStates,
       replaceLogFile: !toggleStates.replaceLogFile,
+    });
+    sendGTMEvent({
+      event: "replaceLogFile",
+      value: toggleStates.replaceLogFile,
     });
   }
 
@@ -52,12 +61,20 @@ export default function Home() {
       ...toggleStates,
       includeTimestamps: !toggleStates.includeTimestamps,
     });
+    sendGTMEvent({
+      event: "includeTimestamps",
+      value: toggleStates.includeTimestamps,
+    });
   }
 
   function toggleOverrideService1(): void {
     setToggleStates({
       ...toggleStates,
       overrideService1: true,
+    });
+    sendGTMEvent({
+      event: "overrideService1",
+      value: toggleStates.overrideService1,
     });
   }
 
@@ -66,12 +83,20 @@ export default function Home() {
       ...toggleStates,
       logService1: !toggleStates.logService1,
     });
+    sendGTMEvent({
+      event: "logService1",
+      value: toggleStates.logService1,
+    });
   }
 
   function toggleReplaceLogFileService1(): void {
     setToggleStates({
       ...toggleStates,
       replaceLogFileService1: !toggleStates.replaceLogFileService1,
+    });
+    sendGTMEvent({
+      event: "replaceLogFileService1",
+      value: toggleStates.replaceLogFileService1,
     });
   }
 
@@ -80,12 +105,20 @@ export default function Home() {
       ...toggleStates,
       includeTimestampsService1: !toggleStates.includeTimestampsService1,
     });
+    sendGTMEvent({
+      event: "includeTimestampsService1",
+      value: toggleStates.includeTimestampsService1,
+    });
   }
 
   function toggleOverrideService2(): void {
     setToggleStates({
       ...toggleStates,
       overrideService2: true,
+    });
+    sendGTMEvent({
+      event: "overrideService2",
+      value: toggleStates.overrideService2,
     });
   }
 
@@ -94,6 +127,10 @@ export default function Home() {
       ...toggleStates,
       logService2: !toggleStates.logService2,
     });
+    sendGTMEvent({
+      event: "logService2",
+      value: toggleStates.logService2,
+    });
   }
 
   function toggleReplaceLogFileService2(): void {
@@ -101,12 +138,20 @@ export default function Home() {
       ...toggleStates,
       replaceLogFileService2: !toggleStates.replaceLogFileService2,
     });
+    sendGTMEvent({
+      event: "replaceLogFileService2",
+      value: toggleStates.replaceLogFileService2,
+    });
   }
 
   function toggleIncludeTimestampsService2(): void {
     setToggleStates({
       ...toggleStates,
       includeTimestampsService2: !toggleStates.includeTimestampsService2,
+    });
+    sendGTMEvent({
+      event: "includeTimestampsService2",
+      value: toggleStates.includeTimestampsService2,
     });
   }
 
