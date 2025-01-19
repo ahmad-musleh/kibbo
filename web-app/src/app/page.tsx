@@ -161,7 +161,7 @@ export default function Home() {
         <title>Kibbo</title>
       </head>
       <body>
-        <div className="lg:h-screen">
+        <div className="hidden md:block md:h-screen">
           <div className="grid grid-cols-1 grid-rows-2 lg:grid-cols-2 lg:grid-rows-1">
             <KibboSelection
               toggleStates={toggleStates}
@@ -179,6 +179,9 @@ export default function Home() {
             />
             <CodeOutput toggleStates={toggleStates} />
           </div>
+          <Footer />
+        </div>
+        <div className="md:hidden">
           <Footer />
         </div>
       </body>
